@@ -24,5 +24,6 @@ Junio 2025
 
 ```bash
 gobuster dns -d futurevera.thm -w /usr/share/wordlists/SecLists/Discovery/DNS/bitquark-subdomains-top100000.txt
+```
 
 🏁 Conclusión
