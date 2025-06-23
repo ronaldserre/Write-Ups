@@ -74,5 +74,18 @@ ff02::2 ip6-allrouters
 ### 5.
 ![image](https://github.com/user-attachments/assets/7aa6769a-f4f3-4baf-9e1f-2a9644c1d426)
 
+```bash
+  GNU nano 4.8                       /etc/hosts                       Modified  
+127.0.0.1       localhost
+127.0.0.1       vnc.tryhackme.tech
+127.0.1.1       tryhackme.lan   tryhackme
+10.10.177.233   secret**************.support.futurevera.thm futurevera.thm  sup>
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+```
+![image](https://github.com/user-attachments/assets/7904e12e-317c-4ba5-82ff-7109e03b4659)
 
 🏁 Conclusión
