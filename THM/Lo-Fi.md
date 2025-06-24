@@ -19,74 +19,26 @@
 - Navegador Web
 
 ## 🧩 Resolución paso a paso
+Omitiremos el escaneo con nmap porque ya sabemos que es una pagina web y en la descripcion del room se nos da pistas de hacer un LFI.
+![image](https://github.com/user-attachments/assets/82587917-0062-49a8-a29f-22797db7a3a6)
+Exporaremos la pagina brevemente y vemos que tenemos varios enlaces que nos permiten seleccionar otros generos
+![image](https://github.com/user-attachments/assets/56de6bc4-4be6-4dae-b2b8-632e3c460dda)
+Al seleccionar un genero al azar (en mi caso `relax`) vemos como en la URL `?page=relax.php`. Esto nos indica que el servidor indica el nombre de un archivo en la URL para cargar cada pagina. lo cual podemos usar para acceder a mas archivos del sistema
+![image](https://github.com/user-attachments/assets/46600d5f-8a9c-4d94-a80e-b2302cbd16d6)
+Debemos saber en que ubicacion del sistema, pero no tenemos la posibilidad de ejecutar comandos directamente en el sistema. Probamos un `pwd` pero no tenemos ningun resultado. 
+![image](https://github.com/user-attachments/assets/e092fcf8-1b5d-46c4-882d-b90e91327d14)
+Intentamos acceder `\etc\passwd`, un archivo que es objetivo de cualquier atacante para enumerar los usuarios del sistema.
+![image](https://github.com/user-attachments/assets/4636e59f-7c04-4373-82e3-12dc8fe19056)
 
-### 1. Agregar el dociminio a /etc/hosts
+Recibimos un disclaimer del sistema lo cual nos inidica que vamos en un buena direccion.
 ---
-Agregamos el dominio a /etc/hosts asignandole la ip que se nos indica
-```bash
-nano /etc/hosts
-```
-```bash
-127.0.0.1       localhost
-127.0.0.1       vnc.tryhackme.tech
-127.0.1.1       tryhackme.lan   tryhackme
-10.10.83.207    futurevera.thm
+Lo siguiente que haremos es intentar retroceder de directorio usando `../`
+![image](https://github.com/user-attachments/assets/27453fba-f645-43f2-95e2-c4c30d739d8b)
+Repetiremos la operacion hasta obtener un resultado exitoso.
+Despues de 3 intentos y usando `../../../` pudimos acceder a `/etc/passwd`
+![image](https://github.com/user-attachments/assets/f9da849b-9528-45d0-bd78-33c858497bdd)
+Ya nos encontramos en el directorio root, lo ultimo que nos queda hacer es cambiar el nombre del archivo por `flag.txt` y la leemos.
+![image](https://github.com/user-attachments/assets/81386a3c-d2c5-4dd5-bd37-f0bef9f36612)
 
-# The following lines are desirable for IPv6 capable hosts
-::1     localhost ip6-localhost ip6-loopback
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-
-Ahora debemos ser capaces de acceder al dominio 
-
-```
-### 2. Scaneo con Nmap
-```bash
-root@root:~# nmap futurevera.thm
-Starting Nmap 7.80 ( https://nmap.org ) at 2025-06-23 18:01 BST
-Nmap scan report for futurevera.thm (10.10.83.207)
-Host is up (0.0051s latency).
-Not shown: 997 closed ports
-PORT    STATE SERVICE
-22/tcp  open  ssh
-80/tcp  open  http
-443/tcp open  https
-MAC Address: 02:7B:10:06:3F:FD (Unknown)
-
-Nmap done: 1 IP address (1 host up) scanned in 0.43 seconds
-```
-### 3. Primer subdominio
-En la descripcion del room se nos indica que estan reconstruyendo su `support`, por lo tanto es posible que cuenten con un subdominio `support`.
-Agregamos el dominio a `\etc\hosts`
-```bash
-127.0.0.1       localhost
-127.0.0.1       vnc.tryhackme.tech
-127.0.1.1       tryhackme.lan   tryhackme
-10.10.83.207    futurevera.thm support.futurevera.thm
-
-# The following lines are desirable for IPv6 capable hosts
-::1     localhost ip6-localhost ip6-loopback
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-```
-
-### 4. Accedemos al subdominio usando el navegador
-![image](https://github.com/user-attachments/assets/05e8e50b-4cc7-4c85-9521-d5009e123067)
-### 5.
-![image](https://github.com/user-attachments/assets/7aa6769a-f4f3-4baf-9e1f-2a9644c1d426)
-
-```bash
-  GNU nano 4.8                       /etc/hosts                       Modified  
-127.0.0.1       localhost
-127.0.0.1       vnc.tryhackme.tech
-127.0.1.1       tryhackme.lan   tryhackme
-10.10.177.233   secret**************.support.futurevera.thm futurevera.thm  sup>
-
-# The following lines are desirable for IPv6 capable hosts
-::1     localhost ip6-localhost ip6-loopback
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-```
-![image](https://github.com/user-attachments/assets/7904e12e-317c-4ba5-82ff-7109e03b4659)
-https://flag{beea0d6edfcee06a59b83fb50ae81b2f}.s3-website-us-west-3.amazonaws.com/
+---
 🏁 Conclusión
